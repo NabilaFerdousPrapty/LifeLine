@@ -1,5 +1,3 @@
-
-
 # 📂 GitHub Repo Structure for Thesis (Disaster Preparedness GPT + VLM)
 
 ```
@@ -44,35 +42,76 @@
 
 ---
 
+```
+LifeLine-Disaster-Preparedness-Assistant/
+│
+├── 📂 data/                         # Datasets
+│   ├── text/                        # Disaster preparedness docs, PDFs
+│   ├── images/                      # Flood images (from Kaggle, CrisisMMD, etc.)
+│   └── processed/                   # Cleaned/annotated data for training/testing
+│
+├── 📂 notebooks/                    # Jupyter notebooks for experiments
+│   ├── 01_rag_basics.ipynb          # RAG pipeline with disaster text
+│   ├── 02_vlm_basics.ipynb          # Testing VLMs on flood images
+│   ├── 03_integration.ipynb         # Combining RAG + VLM
+│   └── 04_chatbot_demo.ipynb        # Prototype chatbot
+│
+├── 📂 src/                          # Source code
+│   ├── rag_pipeline.py              # Retrieval-Augmented Generation pipeline
+│   ├── vlm_module.py                # Vision-Language Model integration
+│   ├── chatbot.py                   # Main chatbot logic (merges RAG + VLM)
+│   ├── evaluation.py                # Evaluation metrics
+│   └── utils.py                     # Helper functions
+│
+├── 📂 configs/                      # Configuration files
+│   ├── model_config.yaml            # VLM + LLM model settings
+│   └── database_config.yaml         # Vector DB / embeddings setup
+│
+├── 📂 results/                      # Results and logs
+│   ├── eval_reports/                # Evaluation reports (accuracy, relevance, etc.)
+│   ├── examples/                    # Example Q&A outputs
+│   └── images/                      # Sample chatbot screenshots
+│
+├── 📂 thesis/                       # Writing materials
+│   ├── references.bib               # BibTeX references
+│   ├── outline.md                   # Thesis outline
+│   ├── drafts/                      # Draft chapters
+│   └── figures/                     # Diagrams for thesis
+│
+├── requirements.txt                 # Python dependencies
+├── README.md                        # Project description
+└── LICENSE                          # License file
+```
+
 # 📝 What to Save as Notes (Markdown files)
 
 ### **1. Learning Notes**
 
-* `llm_basics.md` → Transformers, GPT, Fine-tuning, Prompting.
-* `rag_basics.md` → What is RAG, why it reduces hallucination.
-* `vlm_basics.md` → How BLIP-2, LLaVA work.
-* `datasets.md` → Dataset sources + basic exploration.
+- `llm_basics.md` → Transformers, GPT, Fine-tuning, Prompting.
+- `rag_basics.md` → What is RAG, why it reduces hallucination.
+- `vlm_basics.md` → How BLIP-2, LLaVA work.
+- `datasets.md` → Dataset sources + basic exploration.
 
 ### **2. Literature Review**
 
-* Each paper you read → summary in **5 bullet points**.
-* Example (MARSHA):
+- Each paper you read → summary in **5 bullet points**.
+- Example (MARSHA):
 
-  * Goal: Multi-agent RAG for hazard adaptation.
-  * Strength: Novel architecture for adaptation.
-  * Limitation: No multimodal support.
-  * Dataset: Not specified (text-based).
-  * My gap: Add VLM support.
+  - Goal: Multi-agent RAG for hazard adaptation.
+  - Strength: Novel architecture for adaptation.
+  - Limitation: No multimodal support.
+  - Dataset: Not specified (text-based).
+  - My gap: Add VLM support.
 
 ### **3. Proposal**
 
-* Full proposal (2–3 pages) → `proposal/full_proposal.md`.
-* 1-page pitch version → `proposal/short_pitch.md`.
-* Roadmap timeline → `proposal/timeline.md`.
+- Full proposal (2–3 pages) → `proposal/full_proposal.md`.
+- 1-page pitch version → `proposal/short_pitch.md`.
+- Roadmap timeline → `proposal/timeline.md`.
 
 ### **4. Thesis Draft**
 
-* Write each chapter separately in `thesis_draft/`.
-* Easier to merge later into Word/PDF.
+- Write each chapter separately in `thesis_draft/`.
+- Easier to merge later into Word/PDF.
 
 ---
