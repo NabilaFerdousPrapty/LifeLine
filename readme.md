@@ -1,117 +1,156 @@
-# 📂 GitHub Repo Structure for Thesis (Disaster Preparedness GPT + VLM)
+# 📌 Lifeline
 
-```
-📁 Disaster-Preparedness-GPT
-│── README.md                  # Project overview (what your thesis is about)
+**Learning-based Interactive Framework for Emergency and Lifesaving INsight Extraction**
+
+**Lifeline** is a research framework that adapts **Vision-Language Models (VLMs)** to answer natural language questions about **remote sensing imagery** for disaster preparedness and response.
+
+When every second counts, Lifeline provides **interactive, explainable, and trustworthy AI insights** from satellite/UAV data.
+
+---
+
+## 🚀 Features
+
+- Vision-Language Models (VLMs) for **Visual Question Answering (VQA)**
+- Disaster-related tasks: preparedness (risk, vulnerability) & response (damage, accessibility)
+- **Explainability**: attention maps & heatmaps
+- Support for **yes/no, counting, and descriptive answers**
+- Lightweight **LoRA/QLoRA fine-tuning** for domain adaptation
+- Modular dataset loading (FloodNet-VQA, xBD, RSIVQA, etc.)
+
+---
+
+## 📂 Repository Structure
+
+```bash
+Lifeline/
+│── README.md                # Project overview (this file)
+│── requirements.txt         # Python dependencies
+│── setup.py                 # Installation script (optional)
+│── .gitignore
 │
-├── 📂 notes/                   # Notes & learning materials
-│   ├── llm_basics.md           # Notes on LLM, GPT, Transformers
-│   ├── rag_basics.md           # Notes on RAG concepts
-│   ├── vlm_basics.md           # Notes on BLIP-2, LLaVA, etc.
-│   ├── datasets.md             # Notes on CrisisMMD, DisasterM3, Kaggle datasets
-│   └── literature_review.md    # Your summaries of papers (MARSHA, DisasterM3, etc.)
+├── data/                    # Datasets (scripts & links, not raw data)
+│   ├── raw/                 # Original datasets
+│   ├── processed/           # Preprocessed Q&A and image tiles
+│   └── README.md            # Dataset sources & setup guide
 │
-├── 📂 papers/                  # Reference papers (PDFs or summaries)
-│   ├── MARSHA_summary.md
-│   ├── DisasterM3_summary.md
-│   ├── VLM_Q1paper_summary.md
-│   └── related_work.md
+├── notebooks/               # Jupyter notebooks for experiments
+│   ├── 01_dataset_prep.ipynb
+│   ├── 02_baseline_vqa.ipynb
+│   ├── 03_lora_finetune.ipynb
+│   ├── 04_evaluation.ipynb
+│   └── 05_visualizations.ipynb
 │
-├── 📂 proposal/                # Proposal drafts
-│   ├── full_proposal.md        # 2–3 page version (the one we made)
-│   ├── short_pitch.md          # 1-page pitch version
-│   └── timeline.md             # Weekly roadmap
+├── src/                     # Source code
+│   ├── config/              # Config files
+│   ├── data_loader.py       # Data preprocessing & loaders
+│   ├── model/               # Model definitions
+│   │   ├── baseline_vqa.py
+│   │   ├── vlm_adapter.py
+│   │   └── attention_utils.py
+│   ├── training/            # Training scripts
+│   │   ├── train_baseline.py
+│   │   ├── train_lora.py
+│   │   └── utils.py
+│   ├── inference/           # Inference & explainability
+│   │   ├── predict.py
+│   │   ├── explain.py
+│   │   └── demo_ui.py
+│   └── evaluation/          # Metrics & evaluation
+│       ├── vqa_metrics.py
+│       └── attention_eval.py
 │
-├── 📂 datasets/                # Links, exploration, samples
-│   ├── dataset_links.md        # Kaggle, Hugging Face, CrisisMMD URLs
-│   ├── preprocessing_notes.md
-│   └── sample_data/            # Store tiny samples (not full dataset)
+├── models/                  # Pretrained & fine-tuned weights
+│   ├── baseline/
+│   └── lifeline_lora/
 │
-├── 📂 experiments/             # Later when you test models
-│   ├── rag_demo.ipynb          # Jupyter notebook for text RAG demo
-│   ├── vlm_demo.ipynb          # BLIP-2 / LLaVA test notebook
-│   └── multimodal_pipeline.md  # Notes on combining text + vision
+├── results/                 # Logs, predictions, visualizations
+│   ├── attention_maps/
+│   ├── predictions.json
+│   └── evaluation_report.csv
 │
-└── 📂 thesis_draft/            # Writing drafts
-    ├── chapter1_intro.md
-    ├── chapter2_lit_review.md
-    ├── chapter3_methodology.md
-    ├── chapter4_results.md
-    └── chapter5_conclusion.md
+└── docs/                    # Documentation
+    ├── proposal.pdf
+    ├── architecture.png
+    └── gantt_plan.png
 ```
 
 ---
 
+## ⚙️ Installation
+
+```bash
+git clone https://github.com/your-username/Lifeline.git
+cd Lifeline
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
+
+pip install -r requirements.txt
 ```
-LifeLine-Disaster-Preparedness-Assistant/
-│
-├── 📂 data/                         # Datasets
-│   ├── text/                        # Disaster preparedness docs, PDFs
-│   ├── images/                      # Flood images (from Kaggle, CrisisMMD, etc.)
-│   └── processed/                   # Cleaned/annotated data for training/testing
-│
-├── 📂 notebooks/                    # Jupyter notebooks for experiments
-│   ├── 01_rag_basics.ipynb          # RAG pipeline with disaster text
-│   ├── 02_vlm_basics.ipynb          # Testing VLMs on flood images
-│   ├── 03_integration.ipynb         # Combining RAG + VLM
-│   └── 04_chatbot_demo.ipynb        # Prototype chatbot
-│
-├── 📂 src/                          # Source code
-│   ├── rag_pipeline.py              # Retrieval-Augmented Generation pipeline
-│   ├── vlm_module.py                # Vision-Language Model integration
-│   ├── chatbot.py                   # Main chatbot logic (merges RAG + VLM)
-│   ├── evaluation.py                # Evaluation metrics
-│   └── utils.py                     # Helper functions
-│
-├── 📂 configs/                      # Configuration files
-│   ├── model_config.yaml            # VLM + LLM model settings
-│   └── database_config.yaml         # Vector DB / embeddings setup
-│
-├── 📂 results/                      # Results and logs
-│   ├── eval_reports/                # Evaluation reports (accuracy, relevance, etc.)
-│   ├── examples/                    # Example Q&A outputs
-│   └── images/                      # Sample chatbot screenshots
-│
-├── 📂 thesis/                       # Writing materials
-│   ├── references.bib               # BibTeX references
-│   ├── outline.md                   # Thesis outline
-│   ├── drafts/                      # Draft chapters
-│   └── figures/                     # Diagrams for thesis
-│
-├── requirements.txt                 # Python dependencies
-├── README.md                        # Project description
-└── LICENSE                          # License file
-```
-
-# 📝 What to Save as Notes (Markdown files)
-
-### **1. Learning Notes**
-
-- `llm_basics.md` → Transformers, GPT, Fine-tuning, Prompting.
-- `rag_basics.md` → What is RAG, why it reduces hallucination.
-- `vlm_basics.md` → How BLIP-2, LLaVA work.
-- `datasets.md` → Dataset sources + basic exploration.
-
-### **2. Literature Review**
-
-- Each paper you read → summary in **5 bullet points**.
-- Example (MARSHA):
-
-  - Goal: Multi-agent RAG for hazard adaptation.
-  - Strength: Novel architecture for adaptation.
-  - Limitation: No multimodal support.
-  - Dataset: Not specified (text-based).
-  - My gap: Add VLM support.
-
-### **3. Proposal**
-
-- Full proposal (2–3 pages) → `proposal/full_proposal.md`.
-- 1-page pitch version → `proposal/short_pitch.md`.
-- Roadmap timeline → `proposal/timeline.md`.
-
-### **4. Thesis Draft**
-
-- Write each chapter separately in `thesis_draft/`.
-- Easier to merge later into Word/PDF.
 
 ---
+
+## ▶️ Usage
+
+### Preprocess Dataset
+
+```bash
+python src/data_loader.py --dataset floodnet --tile-size 512
+```
+
+### Train Baseline VQA
+
+```bash
+python src/training/train_baseline.py --epochs 20
+```
+
+### Fine-tune with LoRA
+
+```bash
+python src/training/train_lora.py --model blip2 --dataset floodnet
+```
+
+### Run Inference
+
+```bash
+python src/inference/predict.py --image sample.png --question "How many flooded buildings?"
+```
+
+### Visualize Attention
+
+```bash
+python src/inference/explain.py --image sample.png --question "Is the road accessible?"
+```
+
+---
+
+## 📊 Datasets
+
+- **FloodNet-VQA** (UAV images, flood Q\&A)
+- **xBD** (satellite pre/post building damage)
+- **RSIVQA / VQA-RS** (remote sensing VQA benchmarks)
+
+_(See `data/README.md` for setup instructions)_
+
+---
+
+## 📅 Roadmap (Thesis Plan)
+
+- [x] Dataset preprocessing pipeline
+- [x] Baseline VQA implementation
+- [ ] LoRA fine-tuning for remote sensing VQA
+- [ ] Evaluation & attention visualization
+- [ ] Prototype demo UI
+- [ ] Thesis writing & final report
+
+---
+
+## 🙌 Acknowledgements
+
+- [FloodNet-VQA](https://github.com/BinaLab/FloodNet)
+- [xBD](https://xview2.org/)
+- [BLIP-2](https://github.com/salesforce/LAVIS), [LLaVA](https://llava-vl.github.io/)
+
+---
+
+✨ **Lifeline: Learning-based Interactive Framework for Emergency and Lifesaving INsight Extraction.**
