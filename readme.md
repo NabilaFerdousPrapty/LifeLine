@@ -2,7 +2,7 @@
 
 **Learning-based Interactive Framework for Emergency and Lifesaving INsight Extraction**
 
-**Lifeline** is a research framework that adapts **Vision-Language Models (VLMs)** to answer natural language questions about **remote sensing imagery** for disaster preparedness and response.
+**Lifeline** is a research framework that adapts **Multimodal** to answer natural language questions about **remote sensing imagery** for disaster preparedness and response.
 
 When every second counts, Lifeline provides **interactive, explainable, and trustworthy AI insights** from satellite/UAV data.
 
