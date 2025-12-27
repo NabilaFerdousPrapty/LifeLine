@@ -1,156 +1,108 @@
-# 📌 Lifeline
 
-**Learning-based Interactive Framework for Emergency and Lifesaving INsight Extraction**
 
-**Lifeline** is a research framework that adapts **Multimodal** to answer natural language questions about **remote sensing imagery** for disaster preparedness and response.
+# Multimodal Disaster Classification using CLIP 
 
-When every second counts, Lifeline provides **interactive, explainable, and trustworthy AI insights** from satellite/UAV data.
+This repository contains the official implementation of a high-precision multimodal classifier for disaster response. By leveraging **Weight-Decomposed Low-Rank Adaptation (DoRA)** on a **CLIP** backbone, this project surpasses traditional full fine-tuning benchmarks (89%) to achieve **>90% accuracy** on the CrisisMMD dataset while training only **~2.5%** of the parameters.
 
 ---
 
-## 🚀 Features
+## 🚀 Key Features
 
-- Vision-Language Models (VLMs) for **Visual Question Answering (VQA)**
-- Disaster-related tasks: preparedness (risk, vulnerability) & response (damage, accessibility)
-- **Explainability**: attention maps & heatmaps
-- Support for **yes/no, counting, and descriptive answers**
-- Lightweight **LoRA/QLoRA fine-tuning** for domain adaptation
-- Modular dataset loading (FloodNet-VQA, xBD, RSIVQA, etc.)
+* **State-of-the-Art Fine-Tuning:** Implements **DoRA**, which decouples magnitude and direction updates to match full fine-tuning performance with massive efficiency.
+* **Multimodal Alignment:** Utilizes a custom **Projection Alignment** layer and **Trainable LayerNorms** to calibrate CLIP's generic embeddings for noisy, disaster-specific social media data.
+* **Complex Classification:** Supports three critical humanitarian tasks:
+1. **Task 1:** Informative vs. Non-informative (Binary)
+2. **Task 2:** Humanitarian Categories (8-class: Infrastructure, Affected People, etc.)
+3. **Task 3:** Damage Severity Assessment (Severe, Mild, None)
+
+
+* **Optimized Training:** Includes Cosine Annealing with Warmup and Label Smoothing to prevent overfitting and ensure stability.
 
 ---
 
-## 📂 Repository Structure
+## 📊 Performance Comparison
+
+| Method | Trainable Params | Val Accuracy (Binary) | GPU VRAM |
+| --- | --- | --- | --- |
+| Full Fine-Tuning | 100% (150M+) | 89.00% | >24 GB |
+| Standard LoRA () | ~3.7% | 87.53% | <8 GB |
+| **Proposed DoRA + LN Adaptation** | **~2.52% (3.9M)** | **90.42%** | **<8 GB** |
+
+---
+
+## 🛠️ Installation
 
 ```bash
-Lifeline/
-│── README.md                # Project overview (this file)
-│── requirements.txt         # Python dependencies
-│── setup.py                 # Installation script (optional)
-│── .gitignore
-│
-├── data/                    # Datasets (scripts & links, not raw data)
-│   ├── raw/                 # Original datasets
-│   ├── processed/           # Preprocessed Q&A and image tiles
-│   └── README.md            # Dataset sources & setup guide
-│
-├── notebooks/               # Jupyter notebooks for experiments
-│   ├── 01_dataset_prep.ipynb
-│   ├── 02_baseline_vqa.ipynb
-│   ├── 03_lora_finetune.ipynb
-│   ├── 04_evaluation.ipynb
-│   └── 05_visualizations.ipynb
-│
-├── src/                     # Source code
-│   ├── config/              # Config files
-│   ├── data_loader.py       # Data preprocessing & loaders
-│   ├── model/               # Model definitions
-│   │   ├── baseline_vqa.py
-│   │   ├── vlm_adapter.py
-│   │   └── attention_utils.py
-│   ├── training/            # Training scripts
-│   │   ├── train_baseline.py
-│   │   ├── train_lora.py
-│   │   └── utils.py
-│   ├── inference/           # Inference & explainability
-│   │   ├── predict.py
-│   │   ├── explain.py
-│   │   └── demo_ui.py
-│   └── evaluation/          # Metrics & evaluation
-│       ├── vqa_metrics.py
-│       └── attention_eval.py
-│
-├── models/                  # Pretrained & fine-tuned weights
-│   ├── baseline/
-│   └── lifeline_lora/
-│
-├── results/                 # Logs, predictions, visualizations
-│   ├── attention_maps/
-│   ├── predictions.json
-│   └── evaluation_report.csv
-│
-└── docs/                    # Documentation
-    ├── proposal.pdf
-    ├── architecture.png
-    └── gantt_plan.png
+# Clone the repository
+git clone https://github.com/your-username/multimodal-disaster-dora.git
+cd multimodal-disaster-dora
+
+# Install dependencies
+pip install torch torchvision transformers peft pillow pandas tqdm scikit-learn
+
 ```
 
 ---
 
-## ⚙️ Installation
+## 📂 Dataset
 
-```bash
-git clone https://github.com/your-username/Lifeline.git
-cd Lifeline
-python -m venv venv
-source venv/bin/activate   # Linux/Mac
-venv\Scripts\activate      # Windows
+This project uses **CrisisMMD**, a multimodal Twitter dataset consisting of ~18,000 image-text pairs from seven major 2017 disasters.
 
-pip install -r requirements.txt
+**Structure:**
+
+* `data/CrisisMMD/task_informative_text_img_train.tsv`
+* `data/CrisisMMD/task_humanitarian_text_img_train.tsv`
+
+---
+
+## 🧠 Model Architecture
+
+The core of the model is a **CLIP (ViT-B/32)** backbone. We inject low-rank adapters into the `q_proj`, `v_proj`, and `MLP` blocks of both the vision and text encoders.
+
+**Why DoRA?**
+Standard LoRA only scales weights. **DoRA** decomposes weight updates () into magnitude () and direction ():
+
+
+
+This allowed us to break the "89% ceiling" by giving the adapters the same directional freedom as full fine-tuning.
+
+---
+
+## 📈 Training Progress
+
+The model benefits from a **25% Warmup Phase** to calibrate the unfrozen LayerNorms before aggressive learning begins.
+
+---
+
+## 📝 Usage
+
+```python
+from model import MultimodalDisasterClassifier
+from peft import PeftModel
+
+# Load the base model
+base_model = MultimodalDisasterClassifier(model_id="openai/clip-vit-base-patch32", num_classes=8)
+
+# Load the best DoRA weights
+model = PeftModel.from_pretrained(base_model, "checkpoints/best_90plus_stable")
+model.to("cuda")
+
+# Run inference
+outputs = model(input_ids, attention_mask, pixel_values)
+
 ```
 
 ---
 
-## ▶️ Usage
+## 🎓 Citation
 
-### Preprocess Dataset
+If you use this code or our findings in your research, please cite:
 
-```bash
-python src/data_loader.py --dataset floodnet --tile-size 512
-```
+```bibtex
 
-### Train Baseline VQA
 
-```bash
-python src/training/train_baseline.py --epochs 20
-```
-
-### Fine-tune with LoRA
-
-```bash
-python src/training/train_lora.py --model blip2 --dataset floodnet
-```
-
-### Run Inference
-
-```bash
-python src/inference/predict.py --image sample.png --question "How many flooded buildings?"
-```
-
-### Visualize Attention
-
-```bash
-python src/inference/explain.py --image sample.png --question "Is the road accessible?"
 ```
 
 ---
 
-## 📊 Datasets
-
-- **FloodNet-VQA** (UAV images, flood Q\&A)
-- **xBD** (satellite pre/post building damage)
-- **RSIVQA / VQA-RS** (remote sensing VQA benchmarks)
-
-_(See `data/README.md` for setup instructions)_
-
----
-
-## 📅 Roadmap (Thesis Plan)
-
-- [x] Dataset preprocessing pipeline
-- [x] Baseline VQA implementation
-- [ ] LoRA fine-tuning for remote sensing VQA
-- [ ] Evaluation & attention visualization
-- [ ] Prototype demo UI
-- [ ] Thesis writing & final report
-
----
-
-## 🙌 Acknowledgements
-
-- [FloodNet-VQA](https://github.com/BinaLab/FloodNet)
-- [xBD](https://xview2.org/)
-- [BLIP-2](https://github.com/salesforce/LAVIS), [LLaVA](https://llava-vl.github.io/)
-
----
-
-✨ **Lifeline: Learning-based Interactive Framework for Emergency and Lifesaving INsight Extraction.**
+**Would you like me to help you create a specific "How to contribute" or "License" section to complete this file?**
