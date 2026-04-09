@@ -20,7 +20,7 @@ This project outlines an end-to-end roadmap for building a **Generative AI-power
 
 ## 🧩 Phase 1: Generative Synthetic Data
 
-**📅 Timeline: Weeks 1–2**
+
 
 ### 🎯 Objective
 
@@ -49,7 +49,7 @@ Address the major weakness of the baseline model:
 
 ## 🧠 Phase 2: Generative Edge VLM (Architecture Pivot)
 
-**📅 Timeline: Weeks 3–5**
+
 
 ### 🎯 Objective
 
@@ -89,7 +89,7 @@ Replace the static CLIP classifier with a **Generative Vision-Language Model (VL
 
 ## 🤖 Phase 3: Visual Question Answering (VQA) Fine-Tuning
 
-**📅 Timeline: Weeks 6–8**
+
 
 ### 🎯 Objective
 
@@ -119,7 +119,7 @@ Assistant: No, the bridge exhibits severe structural failure.
 
 ## ⚙️ Phase 4: Hardware Profiling & ESWA Alignment
 
-**📅 Timeline: Weeks 9–10**
+
 
 ### 🎯 Objective
 
